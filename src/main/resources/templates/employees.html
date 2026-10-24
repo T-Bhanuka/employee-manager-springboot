@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        .error { color: red; font-size: 0.85em; }
+        .success { color: green; font-weight: bold; margin-bottom: 15px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .form-group { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Employee Management System</h2>
+
+    <div th:if="${successMessage}" class="success" th:text="${successMessage}"></div>
+
+    <form th:action="@{/employees}" th:object="${employee}" method="post">
+        <div class="form-group">
+            <label>Full Name:</label><br>
+            <input type="text" th:field="*{fullName}" />
+            <div class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+        </div>
+        <div class="form-group">
+            <label>Email:</label><br>
+            <input type="text" th:field="*{email}" />
+            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div class="form-group">
+            <label>Phone:</label><br>
+            <input type="text" th:field="*{phone}" />
+            <div class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+        </div>
+        <div class="form-group">
+            <label>Department:</label><br>
+            <input type="text" th:field="*{department}" />
+            <div class="error" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></div>
+        </div>
+        <div class="form-group">
+            <label>Salary:</label><br>
+            <input type="number" step="0.01" th:field="*{salary}" />
+            <div class="error" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></div>
+        </div>
+        <button type="submit">Save Employee</button>
+    </form>
+
+    <hr>
+
+    <!-- Task 11: Search Box -->
+    <form th:action="@{/employees}" method="get" style="margin-top: 15px;">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Search by name..." />
+        <button type="submit">Search</button>
+        <a th:href="@{/employees}">Clear</a>
+    </form>
+
+    <h3>Total Employees: <span th:text="${#lists.size(employees)}">0</span></h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="emp : ${employees}">
+                <td th:text="${emp.id}"></td>
+                <td th:text="${emp.fullName}"></td>
+                <td th:text="${emp.email}"></td>
+                <td th:text="${emp.phone}"></td>
+                <td th:text="${emp.department}"></td>
+                <td th:text="${emp.salary}"></td>
+                <td>
+                    <a th:href="@{/employees/{id}/edit(id=${emp.id})}"><button type="button">Edit</button></a>
+                    <form th:action="@{/employees/{id}/delete(id=${emp.id})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

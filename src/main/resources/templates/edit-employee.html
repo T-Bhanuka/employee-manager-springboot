@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        .error { color: red; font-size: 0.85em; }
+        .form-group { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Edit Employee</h2>
+    <form th:action="@{/employees/{id}/update(id=${employee.id})}" th:object="${employee}" method="post">
+        <div class="form-group">
+            <label>Full Name:</label><br>
+            <input type="text" th:field="*{fullName}" />
+            <div class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+        </div>
+        <div class="form-group">
+            <label>Email:</label><br>
+            <input type="text" th:field="*{email}" />
+            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div class="form-group">
+            <label>Phone:</label><br>
+            <input type="text" th:field="*{phone}" />
+            <div class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+        </div>
+        <div class="form-group">
+            <label>Department:</label><br>
+            <input type="text" th:field="*{department}" />
+            <div class="error" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></div>
+        </div>
+        <div class="form-group">
+            <label>Salary:</label><br>
+            <input type="number" step="0.01" th:field="*{salary}" />
+            <div class="error" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></div>
+        </div>
+        <button type="submit">Update Employee</button>
+        <a th:href="@{/employees}">Cancel</a>
+    </form>
+</body>
+</html>
